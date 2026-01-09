@@ -117,7 +117,6 @@ df_ito = df_ito.rename(columns={'total_amount':'subtotal'})
 print(df_ito)
 
 # Database connection details
-"""
 DB_HOST = '127.0.0.1'  # 'localhost'
 DB_USER = 'root'
 DB_PASSWORD = 'admin'
@@ -172,4 +171,3 @@ try:
 finally:
     cursor.close()
     conn.close()
-"""
