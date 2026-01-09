@@ -5,12 +5,27 @@ import mysql.connector
 from mysql.connector import errorcode
 from sqlalchemy import create_engine
 
+# Data quality report definition
+df_dqreport = pd.DataFrame(columns=["FileName", "Record Count", "Duplicates Count", "null counts", "inserted rows"])
 
 # DONE Read data from CSV into dataframe for further analysis and action
 df = pd.read_csv('data\customers_raw.csv')
+cust_csv_rows = len(df)
+cust_csv_null_summary = pd.DataFrame({
+    "Column Name": df.columns,
+    "Null Count": df.isnull().sum().values
+})
+cust_csv_null_summary = cust_csv_null_summary[cust_csv_null_summary['Null Count']>0]
 
 # DONE Drop duplicates
 df = df.drop_duplicates()
+cust_csv_dup_count = cust_csv_rows - len(df)
+
+print("here")
+
+df_dqreport.loc[len(df)] = ['Customers_csv', cust_csv_rows,cust_csv_dup_count,cust_csv_null_summary,20]
+print("data quality report")
+print(df_dqreport)
 
 # DONE update the email ID to customercare@fleximart.com. This is so that the 
 # rows_with_nan_in_email = df[df['email'].isna()]
@@ -102,7 +117,7 @@ df_ito = df_ito.rename(columns={'total_amount':'subtotal'})
 print(df_ito)
 
 # Database connection details
-
+"""
 DB_HOST = '127.0.0.1'  # 'localhost'
 DB_USER = 'root'
 DB_PASSWORD = 'admin'
@@ -157,3 +172,4 @@ try:
 finally:
     cursor.close()
     conn.close()
+"""
